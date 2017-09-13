@@ -1,0 +1,72 @@
+Laravel Homestead new site setup
+
+============ Only on new setup ============
+-Install Git
+-Install VirtualBox
+-Install Vagrant
+-Install VSCode(optional, but some commands below use it)
+
+-Create directories:
+	C:\Dev\
+	C:\Dev\ssh\
+-Run commmands:
+	cd C:\Dev
+	git clone http://github.com/laravel/homestead homestead
+
+-Open Git Bash
+-Run command:
+	ssh-keygen
+-Take defaults
+-Copy the key files from:
+	C:\Users\{Username}\.ssh\
+-Copy files to:
+	C:\Dev\ssh\
+-Run commads:
+	cd C:\Dev\homestead
+	.\Init.bat
+	code Homestead.yaml
+-Edit lines:
+	7  - authorize: ~/.ssh/id_rsa.pub
+	10 - keys:
+	11	- ~/.ssh/id_rsa
+-To:
+	7  - authorize: c:/Dev/ssh/id_rsa.pub
+	10 - keys:
+    	11	- c:/Dev/ssh/id_rsa
+===========================================
+
+========== To create a new project ===============
+-In C:\Dev\ run command
+	composer create-project laravel/laravel {name of project(no spaces)}
+------------- edit Homestead.yaml ----------------
+(Take note of IP at the top of the file)
+-add under folders:
+	- map: c:/Dev/{name of project(no spaces)}
+      to: /var/www/vhosts/{name of project(no spaces)}
+-add under sites:
+    - map: {name of project(no spaces)}.app
+      to: /var/www/vhosts/{name of project(no spaces)}}/public
+-add under databases:
+	- {name of project(no spaces)}
+------------------ Save and close ----------------
+
+-In C:\Dev\{name of project(no spaces)}\
+------------- edit .env --------------------------
+-change APP_URL to {name of project(no spaces)}.app
+-change DB_DATABASE to {name of project(no spaces)}
+------------------ Save and close ----------------
+
+-edit your hosts file by:
+	-Open notepad.exe as admin
+	-Open C:\windows\system32\drivers\etc\hosts
+		-- May need to change file type in lower right hand corner to All Types instead of Text documents (.txt)
+	-Add a line at the bottom:
+		{Ip at the top of Homestead.yaml}	{name of project(no spaces)}.app
+	-Save and close the hosts file
+
+-Go to C:\Dev\homestead
+-Run command:
+	vagrant up
+-Or if you have already ran vagrant up once run:
+	vagrant reload
+==================================================
